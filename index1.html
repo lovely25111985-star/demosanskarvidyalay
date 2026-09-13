@@ -1,0 +1,3791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Management System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+:root{
+    --primary:#123c73;
+    --secondary:#1e5aa8;
+    --accent:#f5b400;
+    --success:#198754;
+    --danger:#dc3545;
+    --warning:#ffc107;
+    --light:#f4f7fb;
+    --dark:#17202a;
+    --white:#fff;
+    --border:#ddd;
+}
+
+body{
+    background:var(--light);
+    color:#222;
+}
+
+button,
+input,
+select,
+textarea{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* LOGIN */
+
+.login-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    linear-gradient(135deg,#123c73,#1e5aa8);
+}
+
+.login-box{
+    width:400px;
+    max-width:92%;
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+    text-align:center;
+}
+
+.login-logo{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.login-box h1{
+    color:var(--primary);
+    margin-bottom:5px;
+}
+
+.login-box p{
+    color:#777;
+    margin-bottom:25px;
+}
+
+.login-box input{
+    width:100%;
+    padding:13px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:7px;
+    outline:none;
+}
+
+.login-box input:focus{
+    border-color:var(--secondary);
+}
+
+.login-btn{
+    width:100%;
+    padding:13px;
+    margin-top:12px;
+    background:var(--primary);
+    color:white;
+    border:0;
+    border-radius:7px;
+    font-weight:bold;
+}
+
+.login-btn:hover{
+    background:var(--secondary);
+}
+
+.demo{
+    margin-top:18px;
+    background:#f1f5f9;
+    padding:10px;
+    border-radius:7px;
+    font-size:13px;
+}
+
+/* APP */
+
+.app{
+    display:none;
+    min-height:100vh;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:#0d2e57;
+    color:white;
+    overflow-y:auto;
+    z-index:1000;
+}
+
+.school-logo{
+    padding:22px 15px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.school-logo .logo-icon{
+    font-size:40px;
+}
+
+.school-logo h2{
+    font-size:20px;
+}
+
+.school-logo small{
+    color:#b9d3ef;
+}
+
+.menu{
+    padding:15px 10px;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#8fa9c5;
+    margin:15px 10px 7px;
+    text-transform:uppercase;
+}
+
+.menu button{
+    width:100%;
+    background:transparent;
+    color:white;
+    border:0;
+    text-align:left;
+    padding:12px 14px;
+    border-radius:7px;
+    margin:2px 0;
+    font-size:14px;
+}
+
+.menu button:hover,
+.menu button.active{
+    background:#1e5aa8;
+}
+
+.menu button span{
+    margin-right:10px;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:70px;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    border-bottom:1px solid #ddd;
+    position:sticky;
+    top:0;
+    z-index:500;
+}
+
+.topbar h2{
+    color:var(--primary);
+    font-size:21px;
+}
+
+.top-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.admin-badge{
+    background:#e8f0fa;
+    color:var(--primary);
+    padding:8px 13px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.logout{
+    border:0;
+    background:var(--danger);
+    color:white;
+    padding:9px 14px;
+    border-radius:6px;
+}
+
+.mobile-menu{
+    display:none;
+    border:0;
+    background:var(--primary);
+    color:white;
+    padding:8px 12px;
+    border-radius:5px;
+}
+
+.content{
+    padding:25px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* DASHBOARD */
+
+.welcome{
+    background:linear-gradient(120deg,#123c73,#2574c4);
+    color:white;
+    padding:25px;
+    border-radius:12px;
+    margin-bottom:25px;
+}
+
+.welcome h1{
+    margin-bottom:7px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat-card{
+    background:white;
+    padding:22px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.stat-icon{
+    width:55px;
+    height:55px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eaf2ff;
+    font-size:25px;
+}
+
+.stat-card h3{
+    font-size:25px;
+    color:var(--primary);
+}
+
+.stat-card p{
+    color:#777;
+    font-size:13px;
+}
+
+/* CARDS */
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+    margin-bottom:20px;
+}
+
+.card h3{
+    color:var(--primary);
+    margin-bottom:18px;
+}
+
+/* TABLE */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+th,
+td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+    font-size:14px;
+}
+
+th{
+    background:#f1f5fa;
+    color:var(--primary);
+}
+
+tr:hover{
+    background:#fafcff;
+}
+
+/* BUTTONS */
+
+.btn{
+    border:0;
+    padding:9px 14px;
+    border-radius:6px;
+    font-size:13px;
+}
+
+.btn-primary{
+    background:var(--primary);
+    color:white;
+}
+
+.btn-success{
+    background:var(--success);
+    color:white;
+}
+
+.btn-danger{
+    background:var(--danger);
+    color:white;
+}
+
+.btn-warning{
+    background:#f0ad00;
+    color:#111;
+}
+
+.btn-secondary{
+    background:#6c757d;
+    color:white;
+}
+
+.action-btns{
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
+}
+
+/* FORM */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.form-group{
+    margin-bottom:5px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    display:block;
+    font-weight:bold;
+    font-size:13px;
+    margin-bottom:6px;
+    color:#444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:11px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    outline:none;
+}
+
+.form-group textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:var(--secondary);
+}
+
+.form-actions{
+    margin-top:15px;
+    display:flex;
+    gap:8px;
+}
+
+/* TOOLBAR */
+
+.toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+}
+
+.search{
+    padding:10px 12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    width:280px;
+    max-width:100%;
+}
+
+/* BADGES */
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.badge-paid{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.badge-pending{
+    background:#fff3cd;
+    color:#664d03;
+}
+
+.badge-absent{
+    background:#f8d7da;
+    color:#842029;
+}
+
+.badge-present{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:3000;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:600px;
+    max-width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:12px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.close{
+    border:0;
+    background:#eee;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+}
+
+/* FEE SUMMARY */
+
+.fee-summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.fee-box{
+    padding:20px;
+    background:white;
+    border-radius:9px;
+    box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+
+.fee-box p{
+    color:#777;
+    font-size:13px;
+}
+
+.fee-box h2{
+    color:var(--primary);
+    margin-top:8px;
+}
+
+/* TRANSPORT */
+
+.route-card{
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:15px;
+    margin-bottom:10px;
+}
+
+.route-card h4{
+    color:var(--primary);
+    margin-bottom:7px;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#222;
+    color:white;
+    padding:14px 18px;
+    border-radius:7px;
+    display:none;
+    z-index:5000;
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+}
+
+.toast.show{
+    display:block;
+}
+
+/* DARK MODE */
+
+body.dark{
+    background:#101820;
+    color:#eee;
+}
+
+body.dark .topbar,
+body.dark .card,
+body.dark .stat-card,
+body.dark .fee-box,
+body.dark .modal-box{
+    background:#1c2730;
+    color:#eee;
+}
+
+body.dark .topbar h2,
+body.dark .card h3,
+body.dark .stat-card h3,
+body.dark .fee-box h2{
+    color:#7db7ff;
+}
+
+body.dark th{
+    background:#263541;
+    color:#fff;
+}
+
+body.dark td{
+    border-color:#34434e;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea{
+    background:#17232d;
+    color:white;
+    border-color:#44515c;
+}
+
+body.dark .form-group label{
+    color:#ddd;
+}
+
+body.dark .admin-badge{
+    background:#263541;
+    color:#fff;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .fee-summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.3s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .topbar h2{
+        font-size:17px;
+    }
+
+    .admin-badge{
+        display:none;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+}
+
+@media(max-width:550px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .fee-summary{
+        grid-template-columns:1fr;
+    }
+
+    .welcome h1{
+        font-size:22px;
+    }
+
+    .login-box{
+        padding:25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<div id="loginPage" class="login-page">
+
+<div class="login-box">
+
+<div class="login-logo">🏫</div>
+
+<h1>School Management</h1>
+
+<p>Admin Control Panel</p>
+
+<input
+type="text"
+id="loginUsername"
+placeholder="Username">
+
+<input
+type="password"
+id="loginPassword"
+placeholder="Password">
+
+<button
+class="login-btn"
+onclick="login()">
+Login
+</button>
+
+<div class="demo">
+<strong>Demo Login</strong><br>
+Username: admin<br>
+Password: admin123
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= APPLICATION ================= -->
+
+<div id="app" class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+<div class="school-logo">
+
+<div class="logo-icon">🏫</div>
+
+<h2>ABC Public School</h2>
+
+<small>School Management System</small>
+
+</div>
+
+<div class="menu">
+
+<div class="menu-title">Main</div>
+
+<button class="active" onclick="showPage('dashboard',this)">
+<span>📊</span> Dashboard
+</button>
+
+<div class="menu-title">Academic</div>
+
+<button onclick="showPage('students',this)">
+<span>👨‍🎓</span> Students
+</button>
+
+<button onclick="showPage('teachers',this)">
+<span>👩‍🏫</span> Teachers
+</button>
+
+<button onclick="showPage('attendance',this)">
+<span>📋</span> Attendance
+</button>
+
+<button onclick="showPage('results',this)">
+<span>📊</span> Results
+</button>
+
+<div class="menu-title">Management</div>
+
+<button onclick="showPage('fees',this)">
+<span>💰</span> Fees Management
+</button>
+
+<button onclick="showPage('transport',this)">
+<span>🚌</span> Transport
+</button>
+
+<button onclick="showPage('admissions',this)">
+<span>📝</span> Admissions
+</button>
+
+<button onclick="showPage('notices',this)">
+<span>📢</span> Notices
+</button>
+
+<div class="menu-title">System</div>
+
+<button onclick="showPage('settings',this)">
+<span>⚙️</span> Settings
+</button>
+
+<button onclick="toggleDark()">
+<span>🌙</span> Dark Mode
+</button>
+
+<button onclick="logout()">
+<span>🚪</span> Logout
+</button>
+
+</div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<div class="topbar">
+
+<div style="display:flex;align-items:center;gap:10px">
+
+<button class="mobile-menu" onclick="toggleSidebar()">
+☰
+</button>
+
+<h2 id="pageTitle">Dashboard</h2>
+
+</div>
+
+<div class="top-right">
+
+<span class="admin-badge">
+👤 Administrator
+</span>
+
+<button class="logout" onclick="logout()">
+Logout
+</button>
+
+</div>
+
+</div>
+
+
+<div class="content">
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard" class="page active">
+
+<div class="welcome">
+
+<h1>Welcome, Administrator 👋</h1>
+
+<p>
+Manage students, teachers, attendance, fees,
+transport and school activities from one place.
+</p>
+
+</div>
+
+<div class="stats">
+
+<div class="stat-card">
+
+<div class="stat-icon">👨‍🎓</div>
+
+<div>
+<h3 id="dashStudents">0</h3>
+<p>Total Students</p>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">👩‍🏫</div>
+
+<div>
+<h3 id="dashTeachers">0</h3>
+<p>Total Teachers</p>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">💰</div>
+
+<div>
+<h3 id="dashFees">₹0</h3>
+<p>Fees Collected</p>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">🚌</div>
+
+<div>
+<h3 id="dashTransport">0</h3>
+<p>Transport Students</p>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>Quick Actions</h3>
+
+<div class="action-btns">
+
+<button
+class="btn btn-primary"
+onclick="openStudentModal()">
+➕ Add Student
+</button>
+
+<button
+class="btn btn-success"
+onclick="openTeacherModal()">
+➕ Add Teacher
+</button>
+
+<button
+class="btn btn-warning"
+onclick="showPage('fees')">
+💰 Manage Fees
+</button>
+
+<button
+class="btn btn-primary"
+onclick="showPage('transport')">
+🚌 Manage Transport
+</button>
+
+<button
+class="btn btn-secondary"
+onclick="showPage('attendance')">
+📋 Attendance
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>Recent Activity</h3>
+
+<div id="recentActivity">
+No recent activity.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= STUDENTS ================= -->
+
+<section id="students" class="page">
+
+<div class="toolbar">
+
+<div>
+<h2>Student Management</h2>
+<p>Manage registered students.</p>
+</div>
+
+<div class="action-btns">
+
+<input
+class="search"
+id="studentSearch"
+placeholder="Search student..."
+onkeyup="renderStudents()">
+
+<button
+class="btn btn-primary"
+onclick="openStudentModal()">
+➕ Add Student
+</button>
+
+<button
+class="btn btn-success"
+onclick="exportStudents()">
+📥 CSV
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Class</th>
+<th>Father Name</th>
+<th>Mobile</th>
+<th>Roll No.</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="studentTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= TEACHERS ================= -->
+
+<section id="teachers" class="page">
+
+<div class="toolbar">
+
+<div>
+<h2>Teacher Management</h2>
+<p>Manage teaching staff.</p>
+</div>
+
+<button
+class="btn btn-primary"
+onclick="openTeacherModal()">
+➕ Add Teacher
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Subject</th>
+<th>Mobile</th>
+<th>Qualification</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="teacherTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ATTENDANCE ================= -->
+
+<section id="attendance" class="page">
+
+<div class="toolbar">
+
+<div>
+<h2>Attendance Management</h2>
+<p>Mark daily student attendance.</p>
+</div>
+
+<div>
+
+<input
+type="date"
+id="attendanceDate"
+class="search">
+
+<button
+class="btn btn-primary"
+onclick="saveAttendance()">
+💾 Save Attendance
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Roll</th>
+<th>Student</th>
+<th>Class</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="attendanceTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= RESULTS ================= -->
+
+<section id="results" class="page">
+
+<div class="toolbar">
+
+<div>
+<h2>Results Management</h2>
+<p>Manage student examination results.</p>
+</div>
+
+<button
+class="btn btn-primary"
+onclick="openResultModal()">
+➕ Add Result
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Student</th>
+<th>Exam</th>
+<th>Class</th>
+<th>Marks</th>
+<th>Percentage</th>
+<th>Grade</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="resultTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= FEES ================= -->
+
+<section id="fees" class="page">
+
+<div class="toolbar">
+
+<div>
+<h2>💰 Fees Management</h2>
+<p>Manage student fees and payments.</p>
+</div>
+
+<button
+class="btn btn-primary"
+onclick="openFeeModal()">
+➕ Add Fee
+</button>
+
+</div>
+
+
+<div class="fee-summary">
+
+<div class="fee-box">
+
+<p>Total Fees</p>
+
+<h2 id="totalFees">
+₹0
+</h2>
+
+</div>
+
+<div class="fee-box">
+
+<p>Collected</p>
+
+<h2 id="collectedFees">
+₹0
+</h2>
+
+</div>
+
+<div class="fee-box">
+
+<p>Pending</p>
+
+<h2 id="pendingFees">
+₹0
+</h2>
+
+</div>
+
+<div class="fee-box">
+
+<p>Payments</p>
+
+<h2 id="paymentCount">
+0
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="toolbar">
+
+<input
+class="search"
+id="feeSearch"
+placeholder="Search fee record..."
+onkeyup="renderFees()">
+
+<button
+class="btn btn-success"
+onclick="exportFees()">
+📥 Export CSV
+</button>
+
+</div>
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Student</th>
+<th>Class</th>
+<th>Fee Type</th>
+<th>Total</th>
+<th>Paid</th>
+<th>Pending</th>
+<th>Due Date</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="feeTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= TRANSPORT ================= -->
+
+<section id="transport" class="page">
+
+<div class="toolbar">
+
+<div>
+<h2>🚌 Transport Management</h2>
+<p>Manage buses, routes and transport students.</p>
+</div>
+
+<button
+class="btn btn-primary"
+onclick="openTransportModal()">
+➕ Assign Transport
+</button>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat-card">
+
+<div class="stat-icon">🚌</div>
+
+<div>
+<h3 id="busCount">0</h3>
+<p>Total Buses</p>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">🛣️</div>
+
+<div>
+<h3 id="routeCount">0</h3>
+<p>Routes</p>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">👨‍🎓</div>
+
+<div>
+<h3 id="transportCount">0</h3>
+<p>Students</p>
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">💰</div>
+
+<div>
+<h3 id="transportFees">₹0</h3>
+<p>Transport Fees</p>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>Transport Records</h3>
+
+<div class="toolbar">
+
+<input
+class="search"
+id="transportSearch"
+placeholder="Search student/route..."
+onkeyup="renderTransport()">
+
+<button
+class="btn btn-success"
+onclick="exportTransport()">
+📥 Export CSV
+</button>
+
+</div>
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Student</th>
+<th>Class</th>
+<th>Bus No.</th>
+<th>Route</th>
+<th>Pickup Point</th>
+<th>Driver</th>
+<th>Monthly Fee</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="transportTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ADMISSIONS ================= -->
+
+<section id="admissions" class="page">
+
+<div class="toolbar">
+
+<div>
+<h2>Admission Applications</h2>
+<p>Manage new admission applications.</p>
+</div>
+
+<button
+class="btn btn-success"
+onclick="exportAdmissions()">
+📥 Export CSV
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Name</th>
+<th>Father</th>
+<th>Mobile</th>
+<th>Class</th>
+<th>Address</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="admissionTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= NOTICES ================= -->
+
+<section id="notices" class="page">
+
+<div class="toolbar">
+
+<div>
+<h2>Notice Management</h2>
+<p>Create school announcements.</p>
+</div>
+
+<button
+class="btn btn-primary"
+onclick="openNoticeModal()">
+➕ Add Notice
+</button>
+
+</div>
+
+<div id="noticeList"></div>
+
+</section>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<section id="settings" class="page">
+
+<h2>System Settings</h2>
+
+<div class="card">
+
+<h3>School Information</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>School Name</label>
+<input
+id="schoolName"
+value="ABC Public School">
+</div>
+
+<div class="form-group">
+<label>Phone</label>
+<input
+id="schoolPhone"
+value="+91 98765 43210">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input
+id="schoolEmail"
+value="school@example.com">
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<input
+id="schoolAddress"
+value="Rosera, Samastipur, Bihar">
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button
+class="btn btn-primary"
+onclick="saveSettings()">
+💾 Save Settings
+</button>
+
+<button
+class="btn btn-danger"
+onclick="clearAllData()">
+🗑️ Clear All Data
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>System Information</h3>
+
+<p>
+This version uses browser localStorage as its local database.
+</p>
+
+<br>
+
+<p>
+For a real online school system with multiple admin/student
+devices, connect this interface to Firebase, MySQL/PHP,
+Node.js or another backend.
+</p>
+
+</div>
+
+</section>
+
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- ================= STUDENT MODAL ================= -->
+
+<div class="modal" id="studentModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Add Student</h3>
+
+<button
+class="close"
+onclick="closeModal('studentModal')">
+×
+</button>
+
+</div>
+
+<form id="studentForm">
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Student Name</label>
+<input id="sName" required>
+</div>
+
+<div class="form-group">
+<label>Father Name</label>
+<input id="sFather" required>
+</div>
+
+<div class="form-group">
+<label>Class</label>
+<select id="sClass" required>
+<option value="">Select</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+<option>11</option>
+<option>12</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Roll Number</label>
+<input id="sRoll" required>
+</div>
+
+<div class="form-group">
+<label>Mobile</label>
+<input id="sMobile" maxlength="10">
+</div>
+
+<div class="form-group">
+<label>Date of Birth</label>
+<input id="sDob" type="date">
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button
+type="submit"
+class="btn btn-primary">
+Save Student
+</button>
+
+<button
+type="button"
+class="btn btn-secondary"
+onclick="closeModal('studentModal')">
+Cancel
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- ================= TEACHER MODAL ================= -->
+
+<div class="modal" id="teacherModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Add Teacher</h3>
+
+<button
+class="close"
+onclick="closeModal('teacherModal')">
+×
+</button>
+
+</div>
+
+<form id="teacherForm">
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Name</label>
+<input id="tName" required>
+</div>
+
+<div class="form-group">
+<label>Subject</label>
+<input id="tSubject" required>
+</div>
+
+<div class="form-group">
+<label>Mobile</label>
+<input id="tMobile">
+</div>
+
+<div class="form-group">
+<label>Qualification</label>
+<input id="tQualification">
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button class="btn btn-primary">
+Save Teacher
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- ================= FEE MODAL ================= -->
+
+<div class="modal" id="feeModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Add Fee Record</h3>
+
+<button
+class="close"
+onclick="closeModal('feeModal')">
+×
+</button>
+
+</div>
+
+<form id="feeForm">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Student</label>
+
+<select id="feeStudent" required></select>
+
+</div>
+
+<div class="form-group">
+
+<label>Fee Type</label>
+
+<select id="feeType">
+
+<option>Tuition Fee</option>
+<option>Admission Fee</option>
+<option>Exam Fee</option>
+<option>Transport Fee</option>
+<option>Annual Fee</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Total Amount</label>
+
+<input
+type="number"
+id="feeTotal"
+min="0"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Paid Amount</label>
+
+<input
+type="number"
+id="feePaid"
+min="0"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Due Date</label>
+
+<input
+type="date"
+id="feeDueDate">
+
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button class="btn btn-primary">
+Save Fee
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- ================= TRANSPORT MODAL ================= -->
+
+<div class="modal" id="transportModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Assign Transport</h3>
+
+<button
+class="close"
+onclick="closeModal('transportModal')">
+×
+</button>
+
+</div>
+
+<form id="transportForm">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Student</label>
+
+<select id="trStudent" required></select>
+
+</div>
+
+<div class="form-group">
+
+<label>Bus Number</label>
+
+<input
+id="trBus"
+placeholder="BUS-01"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Route</label>
+
+<input
+id="trRoute"
+placeholder="Rosera Route"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Pickup Point</label>
+
+<input
+id="trPickup"
+placeholder="Main Road"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Driver Name</label>
+
+<input
+id="trDriver">
+
+</div>
+
+<div class="form-group">
+
+<label>Monthly Fee</label>
+
+<input
+type="number"
+id="trFee"
+min="0">
+
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button class="btn btn-primary">
+Save Transport
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- ================= RESULT MODAL ================= -->
+
+<div class="modal" id="resultModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Add Result</h3>
+
+<button
+class="close"
+onclick="closeModal('resultModal')">
+×
+</button>
+
+</div>
+
+<form id="resultForm">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Student</label>
+
+<select id="rStudent" required></select>
+
+</div>
+
+<div class="form-group">
+
+<label>Exam</label>
+
+<input
+id="rExam"
+placeholder="Annual Examination"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Total Marks</label>
+
+<input
+type="number"
+id="rTotal"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Obtained Marks</label>
+
+<input
+type="number"
+id="rObtained"
+required>
+
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button class="btn btn-primary">
+Save Result
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- ================= NOTICE MODAL ================= -->
+
+<div class="modal" id="noticeModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Add Notice</h3>
+
+<button
+class="close"
+onclick="closeModal('noticeModal')">
+×
+</button>
+
+</div>
+
+<form id="noticeForm">
+
+<div class="form-group">
+
+<label>Notice Title</label>
+
+<input
+id="nTitle"
+required>
+
+</div>
+
+<br>
+
+<div class="form-group">
+
+<label>Notice Message</label>
+
+<textarea
+id="nMessage"
+required></textarea>
+
+</div>
+
+<br>
+
+<div class="form-group">
+
+<label>Date</label>
+
+<input
+type="date"
+id="nDate"
+required>
+
+</div>
+
+<div class="form-actions">
+
+<button class="btn btn-primary">
+Publish Notice
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =====================================================
+   DATABASE
+===================================================== */
+
+const DB_KEY = "schoolManagementDB";
+
+let db = JSON.parse(
+    localStorage.getItem(DB_KEY)
+) || {
+
+    students: [],
+    teachers: [],
+    attendance: [],
+    results: [],
+    fees: [],
+    transport: [],
+    admissions: [],
+    notices: [],
+
+    settings:{
+        schoolName:"ABC Public School",
+        phone:"+91 98765 43210",
+        email:"school@example.com",
+        address:"Rosera, Samastipur, Bihar"
+    }
+
+};
+
+
+/* SAVE DATABASE */
+
+function saveDB(){
+
+    localStorage.setItem(
+        DB_KEY,
+        JSON.stringify(db)
+    );
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function login(){
+
+    const username =
+    document.getElementById("loginUsername").value.trim();
+
+    const password =
+    document.getElementById("loginPassword").value;
+
+    if(username === "admin" && password === "admin123"){
+
+        document.getElementById("loginPage")
+        .style.display="none";
+
+        document.getElementById("app")
+        .style.display="block";
+
+        loadAll();
+
+        toast("Login successful!");
+
+    }
+    else{
+
+        alert("Invalid username or password.");
+
+    }
+
+}
+
+
+function logout(){
+
+    if(confirm("Are you sure you want to logout?")){
+
+        document.getElementById("app")
+        .style.display="none";
+
+        document.getElementById("loginPage")
+        .style.display="flex";
+
+        document.getElementById("loginPassword").value="";
+
+    }
+
+}
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function showPage(page,button=null){
+
+    document
+    .querySelectorAll(".page")
+    .forEach(p=>{
+        p.classList.remove("active");
+    });
+
+    const target =
+    document.getElementById(page);
+
+    if(target){
+        target.classList.add("active");
+    }
+
+    document
+    .querySelectorAll(".menu button")
+    .forEach(b=>{
+        b.classList.remove("active");
+    });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    const titles = {
+
+        dashboard:"Dashboard",
+        students:"Student Management",
+        teachers:"Teacher Management",
+        attendance:"Attendance Management",
+        results:"Results Management",
+        fees:"Fees Management",
+        transport:"Transport Management",
+        admissions:"Admissions",
+        notices:"Notice Management",
+        settings:"Settings"
+
+    };
+
+    document.getElementById("pageTitle")
+    .innerText=titles[page] || "Dashboard";
+
+    document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+    if(page==="dashboard") updateDashboard();
+    if(page==="students") renderStudents();
+    if(page==="teachers") renderTeachers();
+    if(page==="attendance") renderAttendance();
+    if(page==="results") renderResults();
+    if(page==="fees") renderFees();
+    if(page==="transport") renderTransport();
+    if(page==="admissions") renderAdmissions();
+    if(page==="notices") renderNotices();
+
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+function toggleSidebar(){
+
+    document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+function openModal(id){
+
+    document
+    .getElementById(id)
+    .classList.add("show");
+
+}
+
+function closeModal(id){
+
+    document
+    .getElementById(id)
+    .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function toast(message){
+
+    const t =
+    document.getElementById("toast");
+
+    t.innerText=message;
+
+    t.classList.add("show");
+
+    setTimeout(()=>{
+        t.classList.remove("show");
+    },2500);
+
+}
+
+
+/* =====================================================
+   STUDENTS
+===================================================== */
+
+function openStudentModal(){
+
+    document.getElementById("studentForm").reset();
+
+    openModal("studentModal");
+
+}
+
+
+document
+.getElementById("studentForm")
+.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    const student={
+
+        id:Date.now(),
+
+        name:
+        document.getElementById("sName").value.trim(),
+
+        father:
+        document.getElementById("sFather").value.trim(),
+
+        className:
+        document.getElementById("sClass").value,
+
+        roll:
+        document.getElementById("sRoll").value.trim(),
+
+        mobile:
+        document.getElementById("sMobile").value.trim(),
+
+        dob:
+        document.getElementById("sDob").value
+
+    };
+
+    db.students.push(student);
+
+    saveDB();
+
+    closeModal("studentModal");
+
+    renderStudents();
+
+    updateDashboard();
+
+    toast("Student added successfully.");
+
+});
+
+
+function renderStudents(){
+
+    const tbody =
+    document.getElementById("studentTable");
+
+    const search =
+    (document.getElementById("studentSearch")?.value || "")
+    .toLowerCase();
+
+    const students =
+    db.students.filter(s=>
+        `${s.name} ${s.father} ${s.roll} ${s.className}`
+        .toLowerCase()
+        .includes(search)
+    );
+
+    tbody.innerHTML="";
+
+    students.forEach(s=>{
+
+        tbody.innerHTML += `
+
+        <tr>
+
+        <td>${s.id}</td>
+
+        <td><strong>${escapeHTML(s.name)}</strong></td>
+
+        <td>Class ${escapeHTML(s.className)}</td>
+
+        <td>${escapeHTML(s.father)}</td>
+
+        <td>${escapeHTML(s.mobile)}</td>
+
+        <td>${escapeHTML(s.roll)}</td>
+
+        <td>
+
+        <div class="action-btns">
+
+        <button
+        class="btn btn-danger"
+        onclick="deleteStudent(${s.id})">
+        Delete
+        </button>
+
+        </div>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function deleteStudent(id){
+
+    if(!confirm("Delete this student?")) return;
+
+    db.students =
+    db.students.filter(s=>s.id!==id);
+
+    saveDB();
+
+    renderStudents();
+
+    updateDashboard();
+
+    toast("Student deleted.");
+
+}
+
+
+/* =====================================================
+   TEACHERS
+===================================================== */
+
+function openTeacherModal(){
+
+    document.getElementById("teacherForm").reset();
+
+    openModal("teacherModal");
+
+}
+
+
+document
+.getElementById("teacherForm")
+.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    db.teachers.push({
+
+        id:Date.now(),
+
+        name:
+        document.getElementById("tName").value.trim(),
+
+        subject:
+        document.getElementById("tSubject").value.trim(),
+
+        mobile:
+        document.getElementById("tMobile").value.trim(),
+
+        qualification:
+        document.getElementById("tQualification").value.trim()
+
+    });
+
+    saveDB();
+
+    closeModal("teacherModal");
+
+    renderTeachers();
+
+    updateDashboard();
+
+    toast("Teacher added.");
+
+});
+
+
+function renderTeachers(){
+
+    const tbody =
+    document.getElementById("teacherTable");
+
+    tbody.innerHTML="";
+
+    db.teachers.forEach(t=>{
+
+        tbody.innerHTML += `
+
+        <tr>
+
+        <td>${t.id}</td>
+
+        <td>${escapeHTML(t.name)}</td>
+
+        <td>${escapeHTML(t.subject)}</td>
+
+        <td>${escapeHTML(t.mobile)}</td>
+
+        <td>${escapeHTML(t.qualification)}</td>
+
+        <td>
+
+        <button
+        class="btn btn-danger"
+        onclick="deleteTeacher(${t.id})">
+        Delete
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function deleteTeacher(id){
+
+    if(!confirm("Delete teacher?")) return;
+
+    db.teachers =
+    db.teachers.filter(t=>t.id!==id);
+
+    saveDB();
+
+    renderTeachers();
+
+    updateDashboard();
+
+    toast("Teacher deleted.");
+
+}
+
+
+/* =====================================================
+   ATTENDANCE
+===================================================== */
+
+function renderAttendance(){
+
+    const dateInput =
+    document.getElementById("attendanceDate");
+
+    if(!dateInput.value){
+
+        dateInput.value =
+        new Date().toISOString().split("T")[0];
+
+    }
+
+    const tbody =
+    document.getElementById("attendanceTable");
+
+    tbody.innerHTML="";
+
+    db.students.forEach(s=>{
+
+        const existing =
+        db.attendance.find(a=>
+            a.studentId===s.id &&
+            a.date===dateInput.value
+        );
+
+        const status =
+        existing ? existing.status : "Present";
+
+        tbody.innerHTML += `
+
+        <tr>
+
+        <td>${s.roll}</td>
+
+        <td>${escapeHTML(s.name)}</td>
+
+        <td>Class ${s.className}</td>
+
+        <td>
+
+        <select
+        data-student="${s.id}"
+        class="attendance-status">
+
+        <option ${status==="Present"?"selected":""}>
+        Present
+        </option>
+
+        <option ${status==="Absent"?"selected":""}>
+        Absent
+        </option>
+
+        </select>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+document
+.getElementById("attendanceDate")
+.addEventListener("change",renderAttendance);
+
+
+function saveAttendance(){
+
+    const date =
+    document.getElementById("attendanceDate").value;
+
+    if(!date){
+
+        alert("Select attendance date.");
+
+        return;
+
+    }
+
+    document
+    .querySelectorAll(".attendance-status")
+    .forEach(select=>{
+
+        const studentId =
+        Number(select.dataset.student);
+
+        db.attendance =
+        db.attendance.filter(a=>
+            !(a.studentId===studentId &&
+              a.date===date)
+        );
+
+        db.attendance.push({
+
+            id:Date.now()+Math.random(),
+
+            studentId:studentId,
+
+            date:date,
+
+            status:select.value
+
+        });
+
+    });
+
+    saveDB();
+
+    toast("Attendance saved.");
+
+}
+
+
+/* =====================================================
+   RESULTS
+===================================================== */
+
+function openResultModal(){
+
+    populateStudentSelect("rStudent");
+
+    document.getElementById("resultForm").reset();
+
+    populateStudentSelect("rStudent");
+
+    openModal("resultModal");
+
+}
+
+
+document
+.getElementById("resultForm")
+.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    const studentId =
+    Number(document.getElementById("rStudent").value);
+
+    const total =
+    Number(document.getElementById("rTotal").value);
+
+    const obtained =
+    Number(document.getElementById("rObtained").value);
+
+    if(obtained>total){
+
+        alert("Obtained marks cannot be greater than total marks.");
+
+        return;
+
+    }
+
+    const percentage =
+    total ? (obtained/total)*100 : 0;
+
+    let grade="F";
+
+    if(percentage>=90) grade="A+";
+    else if(percentage>=80) grade="A";
+    else if(percentage>=70) grade="B+";
+    else if(percentage>=60) grade="B";
+    else if(percentage>=50) grade="C";
+    else if(percentage>=40) grade="D";
+
+    db.results.push({
+
+        id:Date.now(),
+
+        studentId,
+
+        exam:
+        document.getElementById("rExam").value.trim(),
+
+        total,
+
+        obtained,
+
+        percentage,
+
+        grade
+
+    });
+
+    saveDB();
+
+    closeModal("resultModal");
+
+    renderResults();
+
+    toast("Result added.");
+
+});
+
+
+function renderResults(){
+
+    const tbody =
+    document.getElementById("resultTable");
+
+    tbody.innerHTML="";
+
+    db.results.forEach(r=>{
+
+        const student =
+        db.students.find(s=>s.id===r.studentId);
+
+        if(!student) return;
+
+        tbody.innerHTML += `
+
+        <tr>
+
+        <td>${escapeHTML(student.name)}</td>
+
+        <td>${escapeHTML(r.exam)}</td>
+
+        <td>Class ${student.className}</td>
+
+        <td>${r.obtained}/${r.total}</td>
+
+        <td>${r.percentage.toFixed(2)}%</td>
+
+        <td>
+        <span class="badge badge-present">
+        ${r.grade}
+        </span>
+        </td>
+
+        <td>
+
+        <button
+        class="btn btn-danger"
+        onclick="deleteResult(${r.id})">
+        Delete
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function deleteResult(id){
+
+    if(!confirm("Delete result?")) return;
+
+    db.results =
+    db.results.filter(r=>r.id!==id);
+
+    saveDB();
+
+    renderResults();
+
+    toast("Result deleted.");
+
+}
+
+
+/* =====================================================
+   FEES MANAGEMENT
+===================================================== */
+
+function openFeeModal(){
+
+    document.getElementById("feeForm").reset();
+
+    populateStudentSelect("feeStudent");
+
+    openModal("feeModal");
+
+}
+
+
+document
+.getElementById("feeForm")
+.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    const total =
+    Number(document.getElementById("feeTotal").value);
+
+    const paid =
+    Number(document.getElementById("feePaid").value);
+
+    if(paid>total){
+
+        alert("Paid amount cannot be greater than total amount.");
+
+        return;
+
+    }
+
+    db.fees.push({
+
+        id:Date.now(),
+
+        studentId:
+        Number(document.getElementById("feeStudent").value),
+
+        type:
+        document.getElementById("feeType").value,
+
+        total,
+
+        paid,
+
+        pending:total-paid,
+
+        dueDate:
+        document.getElementById("feeDueDate").value,
+
+        date:
+        new Date().toISOString().split("T")[0]
+
+    });
+
+    saveDB();
+
+    closeModal("feeModal");
+
+    renderFees();
+
+    updateDashboard();
+
+    toast("Fee record added.");
+
+});
+
+
+function renderFees(){
+
+    const tbody =
+    document.getElementById("feeTable");
+
+    const search =
+    (document.getElementById("feeSearch")?.value || "")
+    .toLowerCase();
+
+    tbody.innerHTML="";
+
+    let total=0;
+    let collected=0;
+    let pending=0;
+
+    db.fees.forEach(f=>{
+
+        const student =
+        db.students.find(s=>s.id===f.studentId);
+
+        if(!student) return;
+
+        const text =
+        `${student.name} ${student.className} ${f.type}`
+        .toLowerCase();
+
+        if(!text.includes(search)) return;
+
+        total += Number(f.total);
+        collected += Number(f.paid);
+        pending += Number(f.pending);
+
+        const status =
+        f.pending===0
+        ? `<span class="badge badge-paid">PAID</span>`
+        : `<span class="badge badge-pending">PENDING</span>`;
+
+        tbody.innerHTML += `
+
+        <tr>
+
+        <td>${escapeHTML(student.name)}</td>
+
+        <td>Class ${student.className}</td>
+
+        <td>${escapeHTML(f.type)}</td>
+
+        <td>₹${money(f.total)}</td>
+
+        <td>₹${money(f.paid)}</td>
+
+        <td>₹${money(f.pending)}</td>
+
+        <td>${f.dueDate || "-"}</td>
+
+        <td>${status}</td>
+
+        <td>
+
+        <button
+        class="btn btn-danger"
+        onclick="deleteFee(${f.id})">
+        Delete
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+    document.getElementById("totalFees")
+    .innerText="₹"+money(total);
+
+    document.getElementById("collectedFees")
+    .innerText="₹"+money(collected);
+
+    document.getElementById("pendingFees")
+    .innerText="₹"+money(pending);
+
+    document.getElementById("paymentCount")
+    .innerText=db.fees.length;
+
+}
+
+
+function deleteFee(id){
+
+    if(!confirm("Delete fee record?")) return;
+
+    db.fees =
+    db.fees.filter(f=>f.id!==id);
+
+    saveDB();
+
+    renderFees();
+
+    updateDashboard();
+
+    toast("Fee record deleted.");
+
+}
+
+
+/* =====================================================
+   TRANSPORT MANAGEMENT
+===================================================== */
+
+function openTransportModal(){
+
+    document.getElementById("transportForm").reset();
+
+    populateStudentSelect("trStudent");
+
+    openModal("transportModal");
+
+}
+
+
+document
+.getElementById("transportForm")
+.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    const studentId =
+    Number(document.getElementById("trStudent").value);
+
+    db.transport.push({
+
+        id:Date.now(),
+
+        studentId,
+
+        bus:
+        document.getElementById("trBus").value.trim(),
+
+        route:
+        document.getElementById("trRoute").value.trim(),
+
+        pickup:
+        document.getElementById("trPickup").value.trim(),
+
+        driver:
+        document.getElementById("trDriver").value.trim(),
+
+        fee:
+        Number(document.getElementById("trFee").value)||0
+
+    });
+
+    saveDB();
+
+    closeModal("transportModal");
+
+    renderTransport();
+
+    updateDashboard();
+
+    toast("Transport assigned.");
+
+});
+
+
+function renderTransport(){
+
+    const tbody =
+    document.getElementById("transportTable");
+
+    const search =
+    (document.getElementById("transportSearch")?.value || "")
+    .toLowerCase();
+
+    tbody.innerHTML="";
+
+    let fees=0;
+
+    db.transport.forEach(t=>{
+
+        const student =
+        db.students.find(s=>s.id===t.studentId);
+
+        if(!student) return;
+
+        const text =
+        `${student.name} ${t.route} ${t.bus}`
+        .toLowerCase();
+
+        if(!text.includes(search)) return;
+
+        fees += Number(t.fee)||0;
+
+        tbody.innerHTML += `
+
+        <tr>
+
+        <td>${escapeHTML(student.name)}</td>
+
+        <td>Class ${student.className}</td>
+
+        <td>${escapeHTML(t.bus)}</td>
+
+        <td>${escapeHTML(t.route)}</td>
+
+        <td>${escapeHTML(t.pickup)}</td>
+
+        <td>${escapeHTML(t.driver)}</td>
+
+        <td>₹${money(t.fee)}</td>
+
+        <td>
+
+        <button
+        class="btn btn-danger"
+        onclick="deleteTransport(${t.id})">
+        Delete
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+    const buses =
+    new Set(db.transport.map(t=>t.bus)).size;
+
+    const routes =
+    new Set(db.transport.map(t=>t.route)).size;
+
+    document.getElementById("busCount")
+    .innerText=buses;
+
+    document.getElementById("routeCount")
+    .innerText=routes;
+
+    document.getElementById("transportCount")
+    .innerText=db.transport.length;
+
+    document.getElementById("transportFees")
+    .innerText="₹"+money(fees);
+
+}
+
+
+function deleteTransport(id){
+
+    if(!confirm("Remove transport assignment?")) return;
+
+    db.transport =
+    db.transport.filter(t=>t.id!==id);
+
+    saveDB();
+
+    renderTransport();
+
+    updateDashboard();
+
+    toast("Transport assignment deleted.");
+
+}
+
+
+/* =====================================================
+   ADMISSIONS
+===================================================== */
+
+function renderAdmissions(){
+
+    const tbody =
+    document.getElementById("admissionTable");
+
+    tbody.innerHTML="";
+
+    db.admissions.forEach(a=>{
+
+        tbody.innerHTML += `
+
+        <tr>
+
+        <td>${escapeHTML(a.name)}</td>
+
+        <td>${escapeHTML(a.father)}</td>
+
+        <td>${escapeHTML(a.mobile)}</td>
+
+        <td>${escapeHTML(a.className)}</td>
+
+        <td>${escapeHTML(a.address)}</td>
+
+        <td>
+        <span class="badge badge-pending">
+        ${a.status || "Pending"}
+        </span>
+        </td>
+
+        <td>
+
+        <div class="action-btns">
+
+        <button
+        class="btn btn-success"
+        onclick="approveAdmission(${a.id})">
+        Approve
+        </button>
+
+        <button
+        class="btn btn-danger"
+        onclick="deleteAdmission(${a.id})">
+        Delete
+        </button>
+
+        </div>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function approveAdmission(id){
+
+    const admission =
+    db.admissions.find(a=>a.id===id);
+
+    if(!admission) return;
+
+    admission.status="Approved";
+
+    saveDB();
+
+    renderAdmissions();
+
+    toast("Admission approved.");
+
+}
+
+
+function deleteAdmission(id){
+
+    if(!confirm("Delete admission application?")) return;
+
+    db.admissions =
+    db.admissions.filter(a=>a.id!==id);
+
+    saveDB();
+
+    renderAdmissions();
+
+    toast("Application deleted.");
+
+}
+
+
+/* =====================================================
+   NOTICES
+===================================================== */
+
+function openNoticeModal(){
+
+    document.getElementById("noticeForm").reset();
+
+    document.getElementById("nDate").value =
+    new Date().toISOString().split("T")[0];
+
+    openModal("noticeModal");
+
+}
+
+
+document
+.getElementById("noticeForm")
+.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    db.notices.push({
+
+        id:Date.now(),
+
+        title:
+        document.getElementById("nTitle").value.trim(),
+
+        message:
+        document.getElementById("nMessage").value.trim(),
+
+        date:
+        document.getElementById("nDate").value
+
+    });
+
+    saveDB();
+
+    closeModal("noticeModal");
+
+    renderNotices();
+
+    toast("Notice published.");
+
+});
+
+
+function renderNotices(){
+
+    const list =
+    document.getElementById("noticeList");
+
+    list.innerHTML="";
+
+    if(db.notices.length===0){
+
+        list.innerHTML=`
+
+        <div class="card">
+        No notices available.
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    [...db.notices]
+    .reverse()
+    .forEach(n=>{
+
+        list.innerHTML += `
+
+        <div class="card">
+
+        <div class="toolbar">
+
+        <div>
+
+        <h3>${escapeHTML(n.title)}</h3>
+
+        <small>${n.date}</small>
+
+        </div>
+
+        <button
+        class="btn btn-danger"
+        onclick="deleteNotice(${n.id})">
+        Delete
+        </button>
+
+        </div>
+
+        <p>
+        ${escapeHTML(n.message)}
+        </p>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+function deleteNotice(id){
+
+    if(!confirm("Delete notice?")) return;
+
+    db.notices =
+    db.notices.filter(n=>n.id!==id);
+
+    saveDB();
+
+    renderNotices();
+
+    toast("Notice deleted.");
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard(){
+
+    document.getElementById("dashStudents")
+    .innerText=db.students.length;
+
+    document.getElementById("dashTeachers")
+    .innerText=db.teachers.length;
+
+    const fees =
+    db.fees.reduce(
+        (sum,f)=>sum+Number(f.paid||0),
+        0
+    );
+
+    document.getElementById("dashFees")
+    .innerText="₹"+money(fees);
+
+    document.getElementById("dashTransport")
+    .innerText=db.transport.length;
+
+    const activity =
+    document.getElementById("recentActivity");
+
+    let html="";
+
+    if(db.students.length)
+        html += `<p>👨‍🎓 ${db.students.length} student(s) registered.</p>`;
+
+    if(db.teachers.length)
+        html += `<p>👩‍🏫 ${db.teachers.length} teacher(s) registered.</p>`;
+
+    if(db.fees.length)
+        html += `<p>💰 ${db.fees.length} fee record(s).</p>`;
+
+    if(db.transport.length)
+        html += `<p>🚌 ${db.transport.length} transport assignment(s).</p>`;
+
+    if(db.notices.length)
+        html += `<p>📢 ${db.notices.length} notice(s) published.</p>`;
+
+    activity.innerHTML =
+    html || "No recent activity.";
+
+}
+
+
+/* =====================================================
+   STUDENT SELECT
+===================================================== */
+
+function populateStudentSelect(id){
+
+    const select =
+    document.getElementById(id);
+
+    if(!select) return;
+
+    select.innerHTML=
+    `<option value="">Select Student</option>`;
+
+    db.students.forEach(s=>{
+
+        select.innerHTML += `
+
+        <option value="${s.id}">
+        ${escapeHTML(s.name)} - Class ${s.className} - Roll ${s.roll}
+        </option>
+
+        `;
+
+    });
+
+}
+
+
+/* =====================================================
+   EXPORT FUNCTIONS
+===================================================== */
+
+function downloadCSV(filename,rows){
+
+    if(!rows.length){
+
+        alert("No data to export.");
+
+        return;
+
+    }
+
+    const headers =
+    Object.keys(rows[0]);
+
+    const csv = [
+
+        headers.join(","),
+
+        ...rows.map(row=>
+            headers.map(header=>
+                `"${String(row[header] ?? "")
+                .replace(/"/g,'""')}"`
+            ).join(",")
+        )
+
+    ].join("\n");
+
+    const blob =
+    new Blob([csv],{
+        type:"text/csv;charset=utf-8;"
+    });
+
+    const url =
+    URL.createObjectURL(blob);
+
+    const a =
+    document.createElement("a");
+
+    a.href=url;
+
+    a.download=filename;
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+function exportStudents(){
+
+    downloadCSV(
+        "students.csv",
+        db.students.map(s=>({
+
+            ID:s.id,
+            Name:s.name,
+            Father:s.father,
+            Class:s.className,
+            Roll:s.roll,
+            Mobile:s.mobile,
+            DOB:s.dob
+
+        }))
+    );
+
+}
+
+
+function exportFees(){
+
+    downloadCSV(
+        "fees.csv",
+        db.fees.map(f=>{
+
+            const s =
+            db.students.find(x=>x.id===f.studentId);
+
+            return {
+
+                Student:s?.name||"",
+                Class:s?.className||"",
+                FeeType:f.type,
+                Total:f.total,
+                Paid:f.paid,
+                Pending:f.pending,
+                DueDate:f.dueDate
+
+            };
+
+        })
+    );
+
+}
+
+
+function exportTransport(){
+
+    downloadCSV(
+        "transport.csv",
+        db.transport.map(t=>{
+
+            const s =
+            db.students.find(x=>x.id===t.studentId);
+
+            return {
+
+                Student:s?.name||"",
+                Class:s?.className||"",
+                Bus:t.bus,
+                Route:t.route,
+                Pickup:t.pickup,
+                Driver:t.driver,
+                MonthlyFee:t.fee
+
+            };
+
+        })
+    );
+
+}
+
+
+function exportAdmissions(){
+
+    downloadCSV(
+        "admissions.csv",
+        db.admissions
+    );
+
+}
+
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+function saveSettings(){
+
+    db.settings.schoolName =
+    document.getElementById("schoolName").value;
+
+    db.settings.phone =
+    document.getElementById("schoolPhone").value;
+
+    db.settings.email =
+    document.getElementById("schoolEmail").value;
+
+    db.settings.address =
+    document.getElementById("schoolAddress").value;
+
+    saveDB();
+
+    toast("Settings saved.");
+
+}
+
+
+function loadSettings(){
+
+    document.getElementById("schoolName").value =
+    db.settings.schoolName;
+
+    document.getElementById("schoolPhone").value =
+    db.settings.phone;
+
+    document.getElementById("schoolEmail").value =
+    db.settings.email;
+
+    document.getElementById("schoolAddress").value =
+    db.settings.address;
+
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+function toggleDark(){
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "schoolDarkMode",
+        document.body.classList.contains("dark")
+    );
+
+}
+
+
+function loadDark(){
+
+    if(
+        localStorage.getItem("schoolDarkMode")==="true"
+    ){
+
+        document.body.classList.add("dark");
+
+    }
+
+}
+
+
+/* =====================================================
+   CLEAR DATA
+===================================================== */
+
+function clearAllData(){
+
+    const yes =
+    confirm(
+        "WARNING! This will delete all school data. Continue?"
+    );
+
+    if(!yes) return;
+
+    localStorage.removeItem(DB_KEY);
+
+    location.reload();
+
+}
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function money(value){
+
+    return Number(value||0)
+    .toLocaleString("en-IN");
+
+}
+
+
+function escapeHTML(value){
+
+    return String(value??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+function loadAll(){
+
+    renderStudents();
+    renderTeachers();
+    renderAttendance();
+    renderResults();
+    renderFees();
+    renderTransport();
+    renderAdmissions();
+    renderNotices();
+
+    updateDashboard();
+
+    loadSettings();
+
+    loadDark();
+
+}
+
+
+/* Close modal by clicking outside */
+
+document
+.querySelectorAll(".modal")
+.forEach(modal=>{
+
+    modal.addEventListener("click",function(e){
+
+        if(e.target===modal){
+
+            modal.classList.remove("show");
+
+        }
+
+    });
+
+});
+
+
+/* Enter key login */
+
+document
+.getElementById("loginPassword")
+.addEventListener("keydown",function(e){
+
+    if(e.key==="Enter"){
+
+        login();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
